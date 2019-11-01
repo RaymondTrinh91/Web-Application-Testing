@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, fireEvent, getAllByTestId} from '@testing-library/react';
+import {render, fireEvent} from '@testing-library/react';
 import App from './App';
 
 test('renders without crashing', () => {
@@ -14,7 +14,7 @@ test('it displays all buttons', ()=> {
   getByTestId(/hitbtn/i)
 })
 
-test('it increments ball', ()=> {
+test('it increments ball and resets after hitting 4', ()=> {
   const {getByTestId} = render(<App/>)
   const ballCounter = getByTestId(/ballcount/i)
   const ballButton = getByTestId(/ballbtn/i)
@@ -26,6 +26,13 @@ test('it increments ball', ()=> {
   expect(ballCounter.textContent).toBe(`Ball: 3`)
   fireEvent.click(ballButton)
   expect(ballCounter.textContent).toBe(`Ball: 4`)
+  fireEvent.click(ballButton)
+  fireEvent.click(ballButton)
+  fireEvent.click(ballButton)
+  expect(ballCounter.textContent).toBe(`Ball: 4`)
+  setTimeout(()=>{
+    expect(ballCounter.textContent).toBe(`Ball: 0`)
+  }, 4000)
 })
 
 test('it clears the score', ()=> {

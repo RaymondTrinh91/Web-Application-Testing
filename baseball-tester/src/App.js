@@ -1,43 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+
 import './App.css';
 import Display from './Components/Display'
 import Buttons from './Components/Buttons'
+import useBaseballHook from './Hooks/Hooks'
 
 function App() {
-  const [num, setNum] = useState({
+   const initialValues = {
     strikes: 0,
     ball: 0,
     foul: 0
-  })
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (num.ball === 4 || num.strikes === 3) {
-        setNum({ ball: 0, strikes: 0 })
-      }
-    }, 3500)
-  }, [num])
-
-  useEffect(() => {
-    num.strikes < 2 && num.foul > 0
-      ? setNum({ ...num, strikes: num.strikes + 1, foul: 0 })
-      : setNum({ ...num, strikes: num.strikes, foul: 0 })
-  }, [num.foul])
-
-  const increaseNum = event => {
-    event.preventDefault()
-    if (num.strikes !== 3 && num.ball !== 4) {
-      setNum({ ...num, [event.target.name]: Number(event.target.value) + 1 })
-    }
   }
+  
+  const [num, increaseNum, hitBall] = useBaseballHook(initialValues)
 
-  const hitBall = event => {
-    event.preventDefault();
-    setNum({
-      ball:0,
-      strikes:0,
-    })
-  }
 
   return (
     <div className="App">
